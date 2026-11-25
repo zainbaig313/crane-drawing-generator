@@ -1,0 +1,112 @@
+{% extends 'cranes/base.html' %}
+
+{% block title %}Drawing Preview - {{ design.design_name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="{% url 'cranes:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Drawing Preview</li>
+            </ol>
+        </nav>
+        <h2 class="h3 fw-bold text-dark mb-0">{{ design.design_name }}</h2>
+        <span class="text-muted small">REF-CRANE-{{ design.id|stringformat:"04d" }} &bull; {{ design.get_crane_type_display }}</span>
+    </div>
+    <div class="btn-toolbar gap-2 mt-2 mt-md-0">
+        <a href="{% url 'cranes:dashboard' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-grid-fill me-1"></i> Dashboard
+        </a>
+        <a href="{% url 'cranes:design_detail' design.id %}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-pencil-square me-1"></i> Edit Parameters
+        </a>
+        <a href="{% url 'cranes:download_svg' design.id %}" class="btn btn-info text-white btn-sm fw-semibold">
+            <i class="bi bi-download me-1"></i> Download SVG
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Main Drawing Display Area -->
+    <div class="col-lg-8 col-xl-9">
+        <div class="card card-industrial">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <span class="fw-bold"><i class="bi bi-aspect-ratio me-2 text-primary"></i>2D Front Elevation Drawing</span>
+                <span class="badge bg-light text-dark border">Scale: Auto Proportional</span>
+            </div>
+            <div class="card-body p-3">
+                <div class="drawing-container">
+                    {{ svg_content|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parameter Specification Sidebar -->
+    <div class="col-lg-4 col-xl-3">
+        <div class="card card-industrial mb-3">
+            <div class="card-header py-3">
+                <h5 class="mb-0 fs-6 fw-bold text-dark">
+                    <i class="bi bi-list-check me-2 text-primary"></i>Design Specifications
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush small">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Crane Capacity:</span>
+                        <span class="fw-bold text-primary">{{ design.capacity }} Tonnes</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Crane Span (L):</span>
+                        <span class="fw-bold font-monospace">{{ design.span }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Lifting Height (H):</span>
+                        <span class="fw-bold font-monospace">{{ design.lifting_height }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Girder Depth:</span>
+                        <span class="fw-bold font-monospace">{{ design.girder_depth }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">End Carriage Height:</span>
+                        <span class="fw-bold font-monospace">{{ design.end_carriage_height }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Hoist/Trolley Width:</span>
+                        <span class="fw-bold font-monospace">{{ design.trolley_width }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Hook Block Height:</span>
+                        <span class="fw-bold font-monospace">{{ design.hook_block_height }} mm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Runway Rail Height:</span>
+                        <span class="fw-bold font-monospace">{{ design.runway_rail_height }} mm</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer bg-light py-2 text-muted small text-center">
+                Last updated: {{ design.updated_at|date:"M d, Y H:i" }}
+            </div>
+        </div>
+
+        <!-- Quick API Integration Info -->
+        <div class="card card-industrial">
+            <div class="card-header py-2">
+                <span class="fw-bold small text-muted"><i class="bi bi-code-slash me-1"></i>REST API Access</span>
+            </div>
+            <div class="card-body p-3 small">
+                <p class="text-muted mb-2">Access this design programmatically via the headless REST endpoint:</p>
+                <div class="p-2 bg-light border rounded font-monospace small mb-2 text-break">
+                    GET /api/designs/{{ design.id }}/
+                </div>
+                <div class="p-2 bg-light border rounded font-monospace small text-break">
+                    POST /api/designs/{{ design.id }}/generate-drawing/
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

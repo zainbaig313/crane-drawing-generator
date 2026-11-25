@@ -1,0 +1,190 @@
+{% extends 'cranes/base.html' %}
+{% load static %}
+
+{% block title %}Edit Crane Design - {{ design.design_name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="{% url 'cranes:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'cranes:drawing_preview' design.id %}">{{ design.design_name }}</a></li>
+                <li class="breadcrumb-item active">Edit Parameters</li>
+            </ol>
+        </nav>
+        <h2 class="h4 fw-bold text-dark mb-0">Edit Crane Parameters & Regenerate</h2>
+    </div>
+    <div>
+        <a href="{% url 'cranes:drawing_preview' design.id %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-x-lg me-1"></i> Cancel
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Form Column -->
+    <div class="col-lg-5 col-xl-4">
+        <div class="card card-industrial">
+            <div class="card-header py-3">
+                <h5 class="mb-0 fs-6 fw-bold text-dark">
+                    <i class="bi bi-pencil-fill me-2 text-primary"></i>Modify Parameters
+                </h5>
+            </div>
+            <div class="card-body p-3">
+                <form method="POST" id="crane-design-form" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_design_name" class="form-label">Design Name <span class="text-danger">*</span></label>
+                        <input type="text" name="design_name" id="id_design_name" 
+                               class="form-control {% if errors.design_name %}is-invalid{% endif %}" 
+                               value="{{ form_data.design_name }}" required>
+                        <div id="error_design_name" class="field-error-feedback">{{ errors.design_name.0 }}</div>
+                    </div>
+
+                    <hr class="my-3 text-muted">
+
+                    <!-- 1. Capacity -->
+                    <div class="mb-3">
+                        <label for="id_capacity" class="form-label">Crane Capacity <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" step="0.1" name="capacity" id="id_capacity" 
+                                   class="form-control {% if errors.capacity %}is-invalid{% endif %}" 
+                                   value="{{ form_data.capacity }}" required>
+                            <span class="input-group-text">Tonnes</span>
+                        </div>
+                        <div id="error_capacity" class="field-error-feedback">{{ errors.capacity.0 }}</div>
+                    </div>
+
+                    <!-- 2. Span -->
+                    <div class="mb-3">
+                        <label for="id_span" class="form-label">Crane Span (L) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="span" id="id_span" 
+                                   class="form-control {% if errors.span %}is-invalid{% endif %}" 
+                                   value="{{ form_data.span }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_span" class="field-error-feedback">{{ errors.span.0 }}</div>
+                    </div>
+
+                    <!-- 3. Lifting Height -->
+                    <div class="mb-3">
+                        <label for="id_lifting_height" class="form-label">Lifting Height (H) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="lifting_height" id="id_lifting_height" 
+                                   class="form-control {% if errors.lifting_height %}is-invalid{% endif %}" 
+                                   value="{{ form_data.lifting_height }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_lifting_height" class="field-error-feedback">{{ errors.lifting_height.0 }}</div>
+                    </div>
+
+                    <!-- 4. Girder Depth -->
+                    <div class="mb-3">
+                        <label for="id_girder_depth" class="form-label">Main Girder Depth <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="girder_depth" id="id_girder_depth" 
+                                   class="form-control {% if errors.girder_depth %}is-invalid{% endif %}" 
+                                   value="{{ form_data.girder_depth }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_girder_depth" class="field-error-feedback">{{ errors.girder_depth.0 }}</div>
+                    </div>
+
+                    <!-- 5. End Carriage Height -->
+                    <div class="mb-3">
+                        <label for="id_end_carriage_height" class="form-label">End Carriage Height <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="end_carriage_height" id="id_end_carriage_height" 
+                                   class="form-control {% if errors.end_carriage_height %}is-invalid{% endif %}" 
+                                   value="{{ form_data.end_carriage_height }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_end_carriage_height" class="field-error-feedback">{{ errors.end_carriage_height.0 }}</div>
+                    </div>
+
+                    <!-- 6. Hoist/Trolley Width -->
+                    <div class="mb-3">
+                        <label for="id_trolley_width" class="form-label">Hoist / Trolley Width <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="trolley_width" id="id_trolley_width" 
+                                   class="form-control {% if errors.trolley_width %}is-invalid{% endif %}" 
+                                   value="{{ form_data.trolley_width }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_trolley_width" class="field-error-feedback">{{ errors.trolley_width.0 }}</div>
+                    </div>
+
+                    <!-- 7. Hook Block Height -->
+                    <div class="mb-3">
+                        <label for="id_hook_block_height" class="form-label">Hook Block Height <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="hook_block_height" id="id_hook_block_height" 
+                                   class="form-control {% if errors.hook_block_height %}is-invalid{% endif %}" 
+                                   value="{{ form_data.hook_block_height }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_hook_block_height" class="field-error-feedback">{{ errors.hook_block_height.0 }}</div>
+                    </div>
+
+                    <!-- 8. Runway Rail Height -->
+                    <div class="mb-3">
+                        <label for="id_runway_rail_height" class="form-label">Runway Rail Height <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="runway_rail_height" id="id_runway_rail_height" 
+                                   class="form-control {% if errors.runway_rail_height %}is-invalid{% endif %}" 
+                                   value="{{ form_data.runway_rail_height }}" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div id="error_runway_rail_height" class="field-error-feedback">{{ errors.runway_rail_height.0 }}</div>
+                    </div>
+
+                    <!-- Save & Regenerate Actions -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary fw-semibold py-2">
+                            <i class="bi bi-check2-circle me-1"></i> Save Changes & Regenerate
+                        </button>
+                        <button type="button" id="btn-live-preview" class="btn btn-outline-primary py-2">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Refresh Live Preview
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-3">
+                <form method="POST" action="{% url 'cranes:delete_design' design.id %}" onsubmit="return confirm('Are you sure you want to delete this crane design?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                        <i class="bi bi-trash-fill me-1"></i> Delete Design
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Preview Viewport -->
+    <div class="col-lg-7 col-xl-8">
+        <div class="card card-industrial h-100">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <span class="fs-6 fw-bold text-dark">
+                    <i class="bi bi-eye-fill me-2 text-primary"></i>Live Elevation Preview
+                </span>
+                <div class="d-flex align-items-center">
+                    <div id="preview-spinner" class="spinner-border spinner-border-sm text-primary me-2 d-none"></div>
+                    <span id="preview-notice" class="text-muted small">Auto-updating...</span>
+                </div>
+            </div>
+            <div class="card-body p-3 d-flex flex-column">
+                <div class="drawing-container flex-grow-1 d-flex align-items-center justify-content-center" id="svg-preview-container">
+                    {{ svg_content|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'cranes/js/crane_form.js' %}"></script>
+{% endblock %}

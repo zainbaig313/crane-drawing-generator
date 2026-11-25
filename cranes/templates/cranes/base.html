@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Crane Drawing Generator{% endblock %} | Parametric CAD Elevation</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom Engineering Styles -->
+    <link rel="stylesheet" href="{% static 'cranes/css/custom.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-industrial">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'cranes:dashboard' %}">
+                    <i class="bi bi-gear-wide-connected text-info fs-4 me-2"></i>
+                    <span>Crane Drawing Generator</span>
+                    <span class="brand-badge ms-2">PARAMETRIC 2D</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'cranes:dashboard' %}">
+                                <i class="bi bi-grid-1x2-fill me-1"></i> Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Engineering Disclaimer Banner -->
+    <aside class="disclaimer-banner">
+        <div class="container-fluid px-4 d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill fs-5 me-2 flex-shrink-0"></i>
+            <div>
+                <strong>Prototype Visualization Notice:</strong> This software is a parametric 2D front-elevation drawing generator for visualization and spatial checking. It is <em>not</em> an engineered structural design, certified load calculation, or manufacturing specification.
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="py-4">
+        <div class="container-fluid px-4">
+            <!-- Alert Messages -->
+            {% if messages %}
+                <div class="row mb-3">
+                    <div class="col-12">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container-fluid px-4 d-flex flex-wrap justify-content-between align-items-center text-muted small">
+            <div>
+                <strong>Single-Girder Overhead Crane Parametric Generator</strong> &copy; 2026. Built with Python, Django, DRF, and native SVG.
+            </div>
+            <div>
+                <span class="badge bg-secondary">SQLite Powered</span>
+                <span class="badge bg-light text-dark border ms-1">Bootstrap 5</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

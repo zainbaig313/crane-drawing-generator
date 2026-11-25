@@ -1,0 +1,152 @@
+/* Engineering & Industrial Theme Styles */
+:root {
+    --brand-primary: #0284c7;
+    --brand-dark: #0f172a;
+    --brand-slate: #1e293b;
+    --brand-muted: #64748b;
+    --brand-light: #f8fafc;
+    --brand-border: #e2e8f0;
+}
+
+body {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-industrial {
+    background-color: var(--brand-dark);
+    border-bottom: 3px solid var(--brand-primary);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.brand-badge {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    background-color: #0369a1;
+    color: #ffffff;
+    padding: 3px 6px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+/* Cards */
+.card-industrial {
+    background: #ffffff;
+    border: 1px solid var(--brand-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card-industrial .card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--brand-border);
+    font-weight: 600;
+    color: var(--brand-slate);
+}
+
+/* Drawing Canvas Container */
+.drawing-container {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+}
+
+.drawing-container svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--brand-slate);
+    margin-bottom: 0.25rem;
+}
+
+.input-group-text {
+    background-color: #f8fafc;
+    color: var(--brand-muted);
+    font-weight: 500;
+    font-size: 0.85rem;
+    border-color: #cbd5e1;
+}
+
+.form-control:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.15);
+}
+
+.helper-text {
+    font-size: 0.78rem;
+    color: var(--brand-muted);
+    margin-top: 0.2rem;
+}
+
+.field-error-feedback {
+    font-size: 0.8rem;
+    color: #dc2626;
+    margin-top: 0.2rem;
+    font-weight: 500;
+}
+
+/* Stat Widgets */
+.stat-widget {
+    background: #ffffff;
+    border: 1px solid var(--brand-border);
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 4px solid var(--brand-primary);
+}
+
+.stat-widget .stat-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-muted);
+    font-weight: 600;
+}
+
+.stat-widget .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-slate);
+}
+
+/* Disclaimer Banner */
+.disclaimer-banner {
+    background-color: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+}
+
+/* Table */
+.table-designs th {
+    background-color: #f8fafc;
+    color: var(--brand-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--brand-border);
+}
